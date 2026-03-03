@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Titanic Survival Predictor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #777;
+            font-weight: normal;
+        }
+
+        input, select {
+            margin-top: 5px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border: 2px solid #2a5298;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f8ff;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result h2 {
+            margin: 0;
+            color: #1e3c72;
+        }
+
+        .confidence {
+            margin-top: 8px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Titanic Survival Predictor</h1>
+        <p class="subtitle">Enter passenger details to predict survival</p>
+
+        <div class="info-box">
+            💡 Tip: This prediction is powered by a Random Forest machine learning model trained on historical Titanic passenger data.
+        </div>
+
+        <form action="/predict" method="POST">
+            <label>
+                Ticket Class 
+                <span class="hint">(Passenger's ticket class)</span>
+            </label>
+            <select name="pclass">
+                <option value="1">1st Class</option>
+                <option value="2">2nd Class</option>
+                <option value="3" selected>3rd Class</option>
+            </select>
+
+            <label>
+                Gender 
+                <span class="hint">(0 = Male, 1 = Female)</span>
+            </label>
+            <select name="sex">
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+            </select>
+
+            <label>
+                Age 
+                <span class="hint">(Passenger's age in years)</span>
+            </label>
+            <input type="number" name="age" min="0" max="100" value="25" required>
+
+            <label>
+                Siblings/Spouses Aboard 
+                <span class="hint">(Number of siblings or spouses aboard)</span>
+            </label>
+            <input type="number" name="sibsp" min="0" max="10" value="0" required>
+
+            <label>
+                Parents/Children Aboard 
+                <span class="hint">(Number of parents or children aboard)</span>
+            </label>
+            <input type="number" name="parch" min="0" max="10" value="0" required>
+
+            <label>
+                Ticket Fare 
+                <span class="hint">(Passenger fare paid in USD)</span>
+            </label>
+            <input type="number" name="fare" min="0" max="600" step="0.01" value="32.00" required>
+
+            <button type="submit">🔮 Predict Survival</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result">
+            <h2>{{ prediction_text }}</h2>
+            {% if confidence_text %}
+            <p class="confidence">{{ confidence_text }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
